@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
 
     private MyGLSurfaceView mGLSurfaceView;
     private ViewGroup mRootView;
-    private int mSampleSelectedIndex = SAMPLE_TYPE_KEY_BEATING_HEART - SAMPLE_TYPE;
+    private int mSampleSelectedIndex = SAMPLE_TYPE_BASIC_LIGHTING - SAMPLE_TYPE;
     private AudioCollector mAudioCollector;
     private MyGLRender mGLRender = new MyGLRender();
     private SensorManager mSensorManager;
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
         mRootView.getViewTreeObserver().addOnGlobalLayoutListener(this);
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mGLRender.init();
-
+        loadRGBAImage(R.drawable.board_texture);
     }
 
     @Override

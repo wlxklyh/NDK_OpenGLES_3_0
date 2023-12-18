@@ -13,10 +13,14 @@
 #include <detail/type_mat.hpp>
 #include <detail/type_mat4x4.hpp>
 #include "GLSampleBase.h"
+#include "TriangleSample.h"
+#include "UISquareSample.h"
 
 class BasicLightingSample : public GLSampleBase
 {
 public:
+	TriangleSample tri_sample;
+    UISquareSample  ui_sample;
 	BasicLightingSample();
 
 	virtual ~BasicLightingSample();
@@ -24,6 +28,8 @@ public:
 	virtual void LoadImage(NativeImage *pImage);
 
 	virtual void Init();
+
+    void SelfDraw(int screenW, int screenH);
 	virtual void Draw(int screenW, int screenH);
 
 	virtual void Destroy();

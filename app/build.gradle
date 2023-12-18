@@ -25,10 +25,19 @@ android {
     }
     buildTypes {
         release {
+            manifestPlaceholders = [debuggable: "true"]
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        customDebuggableBuildType {
+            manifestPlaceholders = [debuggable: "true"]
+            debuggable true
+            jniDebuggable true
+            minifyEnabled false
+        }
         debug {
+            manifestPlaceholders = [debuggable: "true"]
             debuggable true
             jniDebuggable true
             minifyEnabled false

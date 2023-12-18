@@ -60,7 +60,7 @@ MyGLRenderContext* MyGLRenderContext::m_pContext = nullptr;
 
 MyGLRenderContext::MyGLRenderContext()
 {
-	m_pCurSample = new BeatingHeartSample();
+	m_pCurSample = new BasicLightingSample();
 	m_pBeforeSample = nullptr;
 
 }
@@ -348,7 +348,6 @@ void MyGLRenderContext::SetImageData(int format, int width, int height, uint8_t 
 void MyGLRenderContext::OnSurfaceCreated()
 {
 	LOGCATE("MyGLRenderContext::OnSurfaceCreated");
-	glClearColor(1.0f,1.0f,1.0f, 1.0f);
 }
 
 void MyGLRenderContext::OnSurfaceChanged(int width, int height)
@@ -359,10 +358,24 @@ void MyGLRenderContext::OnSurfaceChanged(int width, int height)
 	m_ScreenH = height;
 }
 
+
+static bool s_flag = true;
 void MyGLRenderContext::OnDrawFrame()
 {
 	LOGCATE("MyGLRenderContext::OnDrawFrame");
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+    if(s_flag)
+    {
+        s_flag = false;
+        glClearColor(0.0f,0.0f,0.0f, 0.0f);
+        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+    }
+    else
+    {
+        glClear(GL_DEPTH_BUFFER_BIT);
+//        glClear(0);
+    }
+
 
 	if (m_pBeforeSample)
 	{
@@ -373,7 +386,7 @@ void MyGLRenderContext::OnDrawFrame()
 
 	if (m_pCurSample)
 	{
-		m_pCurSample->Init();
+		m_pCurSample->TestInit();
 		m_pCurSample->Draw(m_ScreenW, m_ScreenH);
 	}
 }

@@ -77,6 +77,7 @@ class GLSampleBase
 public:
 	GLSampleBase()
 	{
+        m_hasInited = false;
 		m_ProgramObj = 0;
 		m_VertexShader = 0;
 		m_FragmentShader = 0;
@@ -108,13 +109,23 @@ public:
 
 	virtual void SetGravityXY(float x, float y)
 	{}
-
+    virtual bool TestInit(){
+        if(m_hasInited == false)
+        {
+            m_hasInited = true;
+            Init();
+            return true;
+        }
+        return false;
+    }
 	virtual void Init() = 0;
 	virtual void Draw(int screenW, int screenH) = 0;
 
 	virtual void Destroy() = 0;
 
 protected:
+    GLint m_PosOffset;
+    bool m_hasInited;
 	GLuint m_VertexShader;
 	GLuint m_FragmentShader;
 	GLuint m_ProgramObj;
