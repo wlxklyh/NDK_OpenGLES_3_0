@@ -15,11 +15,12 @@ public:
     int m_AngleX;
     int m_AngleY;
     // 存储顶点数据的容器
-    std::vector<GLfloat> vVertices_vector;
+	bool m_vertices_dirty;
+    std::__ndk1::vector<GLfloat> m_vertices_vector;
     // 存储索引数据的容器
-    std::vector<GLushort> indices_vector;
+    std::__ndk1::vector<GLushort> m_indices_vector;
     GLuint m_VaoId;
-    GLuint m_VboIds[1];
+    GLuint m_VboIds[2];
 	UISquareSample();
 	virtual ~UISquareSample();
 
@@ -31,6 +32,16 @@ public:
     virtual void UpdateTransformMatrix(float rotateX, float rotateY, float scaleX,
                                                float scaleY);
     virtual void Destroy();
+
+    void InitShader();
+
+    void InitVAOData();
+
+    void UploadVAO();
+
+    void DeleteVAO();
+
+	void UpdateVBO() const;
 };
 
 

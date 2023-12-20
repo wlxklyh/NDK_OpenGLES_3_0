@@ -185,10 +185,10 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-        mGLSurfaceView = new MyGLSurfaceView(this, mGLRender);
-        mRootView.addView(mGLSurfaceView, lp);
-        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-
+//        mGLSurfaceView = new MyGLSurfaceView(this, mGLRender);
+//        mRootView.addView(mGLSurfaceView, lp);
+//        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+        _innerOnItemClick(SAMPLE_TYPE_BASIC_LIGHTING - SAMPLE_TYPE);
     }
 
     @Override
@@ -304,188 +304,11 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
         myPreviewSizeViewAdapter.addOnItemClickListener(new MyRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                mRootView.removeView(mGLSurfaceView);
-                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-                mGLSurfaceView = new MyGLSurfaceView(MainActivity.this, mGLRender);
-                mRootView.addView(mGLSurfaceView, lp);
-
                 int selectIndex = myPreviewSizeViewAdapter.getSelectIndex();
                 myPreviewSizeViewAdapter.setSelectIndex(position);
                 myPreviewSizeViewAdapter.notifyItemChanged(selectIndex);
                 myPreviewSizeViewAdapter.notifyItemChanged(position);
-                mSampleSelectedIndex = position;
-                mGLSurfaceView.setRenderMode(RENDERMODE_WHEN_DIRTY);
-
-                if (mRootView.getWidth() != mGLSurfaceView.getWidth()
-                        || mRootView.getHeight() != mGLSurfaceView.getHeight()) {
-                    mGLSurfaceView.setAspectRatio(mRootView.getWidth(), mRootView.getHeight());
-                }
-
-                mGLRender.setParamsInt(SAMPLE_TYPE, position + SAMPLE_TYPE, 0);
-
-                int sampleType = position + SAMPLE_TYPE;
-                Bitmap tmp;
-                switch (sampleType) {
-                    case SAMPLE_TYPE_TRIANGLE:
-                        break;
-                    case SAMPLE_TYPE_TEXTURE_MAP:
-                        loadRGBAImage(R.drawable.dzzz);
-                        break;
-                    case SAMPLE_TYPE_YUV_TEXTURE_MAP:
-                        loadNV21Image();
-                        break;
-                    case SAMPLE_TYPE_VAO:
-                        break;
-                    case SAMPLE_TYPE_FBO:
-                    case SAMPLE_TYPE_KEY_COPY_TEXTURE:
-                    case SAMPLE_TYPE_KEY_BLIT_FRAME_BUFFER:
-                    {
-                        Bitmap bitmap = loadRGBAImage(R.drawable.lye);
-                        mGLSurfaceView.setAspectRatio(bitmap.getWidth(), bitmap.getHeight());
-                    }
-                        break;
-                    case SAMPLE_TYPE_FBO_LEG:
-                        loadRGBAImage(R.drawable.leg);
-                        break;
-                    case SAMPLE_TYPE_EGL:
-                        startActivity(new Intent(MainActivity.this, EGLActivity.class));
-                        break;
-                    case SAMPLE_TYPE_COORD_SYSTEM:
-                    case SAMPLE_TYPE_BASIC_LIGHTING:
-                    case SAMPLE_TYPE_TRANS_FEEDBACK:
-                    case SAMPLE_TYPE_MULTI_LIGHTS:
-                    case SAMPLE_TYPE_DEPTH_TESTING:
-                    case SAMPLE_TYPE_INSTANCING:
-                    case SAMPLE_TYPE_STENCIL_TESTING:
-                        loadRGBAImage(R.drawable.board_texture);
-                        break;
-                    case SAMPLE_TYPE_BLENDING:
-                        loadRGBAImage(R.drawable.board_texture,0);
-                        loadRGBAImage(R.drawable.floor,1);
-                        loadRGBAImage(R.drawable.window,2);
-                        break;
-                    case SAMPLE_TYPE_PARTICLES:
-                        loadRGBAImage(R.drawable.board_texture);
-                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                        break;
-                    case SAMPLE_TYPE_SKYBOX:
-                        loadRGBAImage(R.drawable.right,0);
-                        loadRGBAImage(R.drawable.left,1);
-                        loadRGBAImage(R.drawable.top,2);
-                        loadRGBAImage(R.drawable.bottom,3);
-                        loadRGBAImage(R.drawable.back,4);
-                        loadRGBAImage(R.drawable.front,5);
-                        break;
-                    case SAMPLE_TYPE_PBO:
-                        loadRGBAImage(R.drawable.front);
-                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                        break;
-                    case SAMPLE_TYPE_KEY_BEATING_HEART:
-                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                        break;
-                    case SAMPLE_TYPE_KEY_CLOUD:
-                        loadRGBAImage(R.drawable.noise);
-                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                        break;
-                    case SAMPLE_TYPE_KEY_TIME_TUNNEL:
-                        loadRGBAImage(R.drawable.front);
-                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                        break;
-                    case SAMPLE_TYPE_KEY_BEZIER_CURVE:
-                        //loadRGBAImage(R.drawable.board_texture);
-                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                        break;
-                    case SAMPLE_TYPE_KEY_BIG_EYES:
-                    case SAMPLE_TYPE_KEY_FACE_SLENDER:
-                        Bitmap bitmap = loadRGBAImage(R.drawable.yifei);
-                        mGLSurfaceView.setAspectRatio(bitmap.getWidth(), bitmap.getHeight());
-                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                        break;
-                    case SAMPLE_TYPE_KEY_BIG_HEAD:
-                    case SAMPLE_TYPE_KEY_ROTARY_HEAD:
-                        Bitmap b = loadRGBAImage(R.drawable.huge);
-                        mGLSurfaceView.setAspectRatio(b.getWidth(), b.getHeight());
-                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                        break;
-                    case SAMPLE_TYPE_KEY_VISUALIZE_AUDIO:
-                        if(mAudioCollector == null) {
-                            mAudioCollector = new AudioCollector();
-                            mAudioCollector.addCallback(MainActivity.this);
-                            mAudioCollector.init();
-                        }
-                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                    case SAMPLE_TYPE_KEY_SCRATCH_CARD:
-                        Bitmap b1 = loadRGBAImage(R.drawable.yifei);
-                        mGLSurfaceView.setAspectRatio(b1.getWidth(), b1.getHeight());
-                        //mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                        break;
-                    case SAMPLE_TYPE_KEY_AVATAR:
-                        Bitmap b2 = loadRGBAImage(R.drawable.avatar_a, 0);
-                        mGLSurfaceView.setAspectRatio(b2.getWidth(), b2.getHeight());
-                        loadRGBAImage(R.drawable.avatar_b, 1);
-                        loadRGBAImage(R.drawable.avatar_c, 2);
-                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                        break;
-                    case SAMPLE_TYPE_KEY_SHOCK_WAVE:
-                    case SAMPLE_TYPE_KEY_MULTI_THREAD_RENDER:
-                    case SAMPLE_TYPE_KEY_TEXT_RENDER:
-                        Bitmap b3 = loadRGBAImage(R.drawable.lye);
-                        mGLSurfaceView.setAspectRatio(b3.getWidth(), b3.getHeight());
-                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                        break;
-                    case SAMPLE_TYPE_KEY_MRT:
-                    case SAMPLE_TYPE_KEY_FBO_BLIT:
-                    case SAMPLE_TYPE_KEY_TBO:
-                    case SAMPLE_TYPE_KEY_UBO:
-                    case SAMPLE_TYPE_KEY_BINARY_PROGRAM:
-                        Bitmap b4 = loadRGBAImage(R.drawable.lye);
-                        mGLSurfaceView.setAspectRatio(b4.getWidth(), b4.getHeight());
-                        break;
-                    case SAMPLE_TYPE_KEY_RGB2YUYV:
-                    case SAMPLE_TYPE_KEY_RGB2NV21:
-                    case SAMPLE_TYPE_KEY_RGB2I420:
-                    case SAMPLE_TYPE_KEY_RGB2I444:
-                        tmp = loadRGBAImage(R.drawable.sk);
-                        mGLSurfaceView.setAspectRatio(tmp.getWidth(), tmp.getHeight());
-                        break;
-                    case SAMPLE_TYPE_KEY_STAY_COLOR:
-                        loadGrayImage();
-                        Bitmap b5 = loadRGBAImage(R.drawable.lye2);
-                        loadRGBAImage(R.drawable.ascii_mapping, 1);
-                        mGLSurfaceView.setAspectRatio(b5.getWidth(), b5.getHeight());
-                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                        break;
-                    case SAMPLE_TYPE_KEY_TRANSITIONS_1:
-                    case SAMPLE_TYPE_KEY_TRANSITIONS_2:
-                    case SAMPLE_TYPE_KEY_TRANSITIONS_3:
-                    case SAMPLE_TYPE_KEY_TRANSITIONS_4:
-                        loadRGBAImage(R.drawable.lye, 0);
-                        loadRGBAImage(R.drawable.lye4, 1);
-                        loadRGBAImage(R.drawable.lye5, 2);
-                        loadRGBAImage(R.drawable.lye6, 3);
-                        loadRGBAImage(R.drawable.lye7, 4);
-                        tmp = loadRGBAImage(R.drawable.lye8, 5);
-                        mGLSurfaceView.setAspectRatio(tmp.getWidth(), tmp.getHeight());
-                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-                        break;
-//                    case SAMPLE_TYPE_KEY_CONVEYOR_BELT:
-//                        tmp = loadRGBAImage(R.drawable.lye4);
-//                        mGLSurfaceView.setAspectRatio(tmp.getWidth(), tmp.getHeight());
-//                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
-//                        break;
-                    default:
-                        break;
-                }
-
-                mGLSurfaceView.requestRender();
-
-                if(sampleType != SAMPLE_TYPE_KEY_VISUALIZE_AUDIO && mAudioCollector != null) {
-                    mAudioCollector.unInit();
-                    mAudioCollector = null;
-                }
-
+                _innerOnItemClick(position);
                 dialog.cancel();
             }
         });
@@ -499,6 +322,188 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
 
         dialog.show();
         dialog.getWindow().setContentView(rootView);
+
+    }
+
+    private void _innerOnItemClick(int position) {
+        mRootView.removeView(mGLSurfaceView);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+        mGLSurfaceView = new MyGLSurfaceView(MainActivity.this, mGLRender);
+        mRootView.addView(mGLSurfaceView, lp);
+
+
+        mSampleSelectedIndex = position;
+        mGLSurfaceView.setRenderMode(RENDERMODE_WHEN_DIRTY);
+
+        if (mRootView.getWidth() != mGLSurfaceView.getWidth()
+                || mRootView.getHeight() != mGLSurfaceView.getHeight()) {
+            mGLSurfaceView.setAspectRatio(mRootView.getWidth(), mRootView.getHeight());
+        }
+
+        mGLRender.setParamsInt(SAMPLE_TYPE, position + SAMPLE_TYPE, 0);
+
+        int sampleType = position + SAMPLE_TYPE;
+        Bitmap tmp;
+        switch (sampleType) {
+            case SAMPLE_TYPE_TRIANGLE:
+                break;
+            case SAMPLE_TYPE_TEXTURE_MAP:
+                loadRGBAImage(R.drawable.dzzz);
+                break;
+            case SAMPLE_TYPE_YUV_TEXTURE_MAP:
+                loadNV21Image();
+                break;
+            case SAMPLE_TYPE_VAO:
+                break;
+            case SAMPLE_TYPE_FBO:
+            case SAMPLE_TYPE_KEY_COPY_TEXTURE:
+            case SAMPLE_TYPE_KEY_BLIT_FRAME_BUFFER:
+            {
+                Bitmap bitmap = loadRGBAImage(R.drawable.lye);
+                mGLSurfaceView.setAspectRatio(bitmap.getWidth(), bitmap.getHeight());
+            }
+                break;
+            case SAMPLE_TYPE_FBO_LEG:
+                loadRGBAImage(R.drawable.leg);
+                break;
+            case SAMPLE_TYPE_EGL:
+                startActivity(new Intent(MainActivity.this, EGLActivity.class));
+                break;
+            case SAMPLE_TYPE_COORD_SYSTEM:
+            case SAMPLE_TYPE_BASIC_LIGHTING:
+            case SAMPLE_TYPE_TRANS_FEEDBACK:
+            case SAMPLE_TYPE_MULTI_LIGHTS:
+            case SAMPLE_TYPE_DEPTH_TESTING:
+            case SAMPLE_TYPE_INSTANCING:
+            case SAMPLE_TYPE_STENCIL_TESTING:
+                loadRGBAImage(R.drawable.board_texture);
+                break;
+            case SAMPLE_TYPE_BLENDING:
+                loadRGBAImage(R.drawable.board_texture,0);
+                loadRGBAImage(R.drawable.floor,1);
+                loadRGBAImage(R.drawable.window,2);
+                break;
+            case SAMPLE_TYPE_PARTICLES:
+                loadRGBAImage(R.drawable.board_texture);
+                mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+                break;
+            case SAMPLE_TYPE_SKYBOX:
+                loadRGBAImage(R.drawable.right,0);
+                loadRGBAImage(R.drawable.left,1);
+                loadRGBAImage(R.drawable.top,2);
+                loadRGBAImage(R.drawable.bottom,3);
+                loadRGBAImage(R.drawable.back,4);
+                loadRGBAImage(R.drawable.front,5);
+                break;
+            case SAMPLE_TYPE_PBO:
+                loadRGBAImage(R.drawable.front);
+                mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+                break;
+            case SAMPLE_TYPE_KEY_BEATING_HEART:
+                mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+                break;
+            case SAMPLE_TYPE_KEY_CLOUD:
+                loadRGBAImage(R.drawable.noise);
+                mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+                break;
+            case SAMPLE_TYPE_KEY_TIME_TUNNEL:
+                loadRGBAImage(R.drawable.front);
+                mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+                break;
+            case SAMPLE_TYPE_KEY_BEZIER_CURVE:
+                //loadRGBAImage(R.drawable.board_texture);
+                mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+                break;
+            case SAMPLE_TYPE_KEY_BIG_EYES:
+            case SAMPLE_TYPE_KEY_FACE_SLENDER:
+                Bitmap bitmap = loadRGBAImage(R.drawable.yifei);
+                mGLSurfaceView.setAspectRatio(bitmap.getWidth(), bitmap.getHeight());
+                mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+                break;
+            case SAMPLE_TYPE_KEY_BIG_HEAD:
+            case SAMPLE_TYPE_KEY_ROTARY_HEAD:
+                Bitmap b = loadRGBAImage(R.drawable.huge);
+                mGLSurfaceView.setAspectRatio(b.getWidth(), b.getHeight());
+                mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+                break;
+            case SAMPLE_TYPE_KEY_VISUALIZE_AUDIO:
+                if(mAudioCollector == null) {
+                    mAudioCollector = new AudioCollector();
+                    mAudioCollector.addCallback(MainActivity.this);
+                    mAudioCollector.init();
+                }
+                mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+            case SAMPLE_TYPE_KEY_SCRATCH_CARD:
+                Bitmap b1 = loadRGBAImage(R.drawable.yifei);
+                mGLSurfaceView.setAspectRatio(b1.getWidth(), b1.getHeight());
+                //mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+                break;
+            case SAMPLE_TYPE_KEY_AVATAR:
+                Bitmap b2 = loadRGBAImage(R.drawable.avatar_a, 0);
+                mGLSurfaceView.setAspectRatio(b2.getWidth(), b2.getHeight());
+                loadRGBAImage(R.drawable.avatar_b, 1);
+                loadRGBAImage(R.drawable.avatar_c, 2);
+                mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+                break;
+            case SAMPLE_TYPE_KEY_SHOCK_WAVE:
+            case SAMPLE_TYPE_KEY_MULTI_THREAD_RENDER:
+            case SAMPLE_TYPE_KEY_TEXT_RENDER:
+                Bitmap b3 = loadRGBAImage(R.drawable.lye);
+                mGLSurfaceView.setAspectRatio(b3.getWidth(), b3.getHeight());
+                mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+                break;
+            case SAMPLE_TYPE_KEY_MRT:
+            case SAMPLE_TYPE_KEY_FBO_BLIT:
+            case SAMPLE_TYPE_KEY_TBO:
+            case SAMPLE_TYPE_KEY_UBO:
+            case SAMPLE_TYPE_KEY_BINARY_PROGRAM:
+                Bitmap b4 = loadRGBAImage(R.drawable.lye);
+                mGLSurfaceView.setAspectRatio(b4.getWidth(), b4.getHeight());
+                break;
+            case SAMPLE_TYPE_KEY_RGB2YUYV:
+            case SAMPLE_TYPE_KEY_RGB2NV21:
+            case SAMPLE_TYPE_KEY_RGB2I420:
+            case SAMPLE_TYPE_KEY_RGB2I444:
+                tmp = loadRGBAImage(R.drawable.sk);
+                mGLSurfaceView.setAspectRatio(tmp.getWidth(), tmp.getHeight());
+                break;
+            case SAMPLE_TYPE_KEY_STAY_COLOR:
+                loadGrayImage();
+                Bitmap b5 = loadRGBAImage(R.drawable.lye2);
+                loadRGBAImage(R.drawable.ascii_mapping, 1);
+                mGLSurfaceView.setAspectRatio(b5.getWidth(), b5.getHeight());
+                mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+                break;
+            case SAMPLE_TYPE_KEY_TRANSITIONS_1:
+            case SAMPLE_TYPE_KEY_TRANSITIONS_2:
+            case SAMPLE_TYPE_KEY_TRANSITIONS_3:
+            case SAMPLE_TYPE_KEY_TRANSITIONS_4:
+                loadRGBAImage(R.drawable.lye, 0);
+                loadRGBAImage(R.drawable.lye4, 1);
+                loadRGBAImage(R.drawable.lye5, 2);
+                loadRGBAImage(R.drawable.lye6, 3);
+                loadRGBAImage(R.drawable.lye7, 4);
+                tmp = loadRGBAImage(R.drawable.lye8, 5);
+                mGLSurfaceView.setAspectRatio(tmp.getWidth(), tmp.getHeight());
+                mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+                break;
+//                    case SAMPLE_TYPE_KEY_CONVEYOR_BELT:
+//                        tmp = loadRGBAImage(R.drawable.lye4);
+//                        mGLSurfaceView.setAspectRatio(tmp.getWidth(), tmp.getHeight());
+//                        mGLSurfaceView.setRenderMode(RENDERMODE_CONTINUOUSLY);
+//                        break;
+            default:
+                break;
+        }
+
+        mGLSurfaceView.requestRender();
+
+        if(sampleType != SAMPLE_TYPE_KEY_VISUALIZE_AUDIO && mAudioCollector != null) {
+            mAudioCollector.unInit();
+            mAudioCollector = null;
+        }
 
     }
 
